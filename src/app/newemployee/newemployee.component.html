@@ -6,13 +6,13 @@
 
  <div class="form">
     <form [formGroup]="add" novalidate>
-        
+
         <div class="form-group row">
             <label  class="col-sm-2 col-form-label">First Name</label>
             <div class="col-sm-5">
             <input
             formControlName="fname"
-                id="fname" 
+                id="fname"
                 type="text"
                 placeholder="First Name"
                 class="form-control">
@@ -27,7 +27,7 @@
             <input
             formControlName="lname"
                 id="lname"
-                name="lname" 
+                name="lname"
                 type="text"
                 placeholder="Last Name"
                 class="form-control">
@@ -43,7 +43,7 @@
             <input
             formControlName="num"
                 id="num"
-                name="num" 
+                name="num"
                 type="text"
                 placeholder="Mobile Number"
                 class="form-control">
@@ -59,7 +59,7 @@
             <input
             formControlName="dob"
                 id="dob"
-                name="dob" 
+                name="dob"
                 type="date"
                 class="form-control">
                 <div *ngIf="dob && dob.touched && dob.invalid" class="text-danger">
@@ -74,18 +74,18 @@
             <input
             formControlName="pan"
                 id="pan"
-                name="pan" 
+                name="pan"
                 type="text"
                 class="form-control">
                 <div *ngIf="pan && pan.touched && pan.invalid" class="text-danger">
                     <div *ngIf="pan.errors?.required" class="msg">Please enter the PanCard number</div>
-                  </div>  
+                  </div>
         </div>
         </div>
 
 
-         <button type="button" class="btn btn-success "  (click)="datacapture()">Save</button>&nbsp;&nbsp;&nbsp;
-         <button type="button" class="btn btn-primary" (click)="movetodisplay()">Cancel</button>&nbsp;&nbsp;&nbsp;
+         <button type="button" class="btn btn-success "  (click)="dataCapture()">Save</button>&nbsp;&nbsp;&nbsp;
+         <button type="button" class="btn btn-primary" (click)="moveToDisplay()">Cancel</button>&nbsp;&nbsp;&nbsp;
          <button type="reset" class="btn btn-info"   >Reset</button>
         </form>
  </div>

@@ -1,38 +1,34 @@
 <div>
-    <nav>
-        <h1>Create New Employee</h1>
-    </nav>
+  <nav>
+    <h1>Create New Employee</h1>
+  </nav>
 </div>
-  
-  
-   
 <div class="container">
- <span  routerLink="/modify" ><i class="fas fa-plus fa"></i></span>&nbsp;&nbsp;&nbsp;&nbsp;<i class="fas fa-trash"></i>&nbsp;&nbsp;&nbsp;&nbsp;<i class="fas fa-edit"></i>
-    <table class="table table-striped">
-   
-        <thead>
-          <tr>
-            <th scope="col">Code</th>
-            <th scope="col">First Name</th>
-            <th scope="col">Last Name</th>
-            <th scope="col">Mobile</th>
-            <th scope="col">Dob</th>
-            <th scope="col">Pan</th>
-          
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let emp of employee">
-            <th scope="row"></th>
-            <td>{{emp.fname}} </td>
-            <td>{{emp.lname}} </td>
-            <td>{{emp.num}}</td>
-            <td>{{emp.dob}}</td>
-            <td>{{emp.pan}}</td>
-            <td><i class="fas fa-trash"></i>&nbsp;&nbsp;&nbsp;&nbsp;<i class="fas fa-edit"></i></td>
-          </tr>
-         
-        </tbody>
-      </table>
+  <span routerLink="/modify"><i class="fas fa-plus fa"></i></span>&nbsp;&nbsp;&nbsp;&nbsp;
+  <span (click)="deleteEmployee()"><i class="fas fa-trash"></i></span>&nbsp;&nbsp;&nbsp;&nbsp;
+  <span><i class="fas fa-edit"></i></span>
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th scope="col">Code</th>
+      <th scope="col">First Name</th>
+      <th scope="col">Last Name</th>
+      <th scope="col">Mobile</th>
+      <th scope="col">Dob</th>
+      <th scope="col">Pan</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let emp of employee" [id]="emp.id" (click)="selectRow(emp.id)" [ngClass]=
+      "emp.id === selectedRow?'bg-secondary':''">
+      <th scope="row"></th>
+      <td>{{emp.fName}} </td>
+      <td>{{emp.lName}} </td>
+      <td>{{emp.num}}</td>
+      <td>{{emp.dob}}</td>
+      <td>{{emp.pan}}</td>
+    </tr>
+    </tbody>
+  </table>
 
 </div>
