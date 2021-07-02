@@ -1,0 +1,16 @@
+nav{
+    background-color: rgb(66, 93, 189);
+    height: 80px;
+}
+h1{
+    color: white;
+    text-align: center;
+    padding-top: 20px;
+    font-size: xx-large;
+}
+.form{
+    padding-top: 80px;
+    padding-left: 350px;
+    text-align: center;
+}
+ 
