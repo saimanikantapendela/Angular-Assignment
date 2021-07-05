@@ -3,6 +3,8 @@ import {EmployeeService} from '../employee.service';
 import {Component, OnInit} from '@angular/core';
 import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
+import {HttpClient} from '@angular/common/http'
+
 
 @Component({
              selector: 'app-newemployee',
@@ -14,7 +16,7 @@ export class NewEmployeeComponent implements OnInit {
   temp: any = [];
   len: any;
 
-  constructor(public fb: FormBuilder, private router: Router, private employeeService: EmployeeService) {
+  constructor(private http: HttpClient , public fb: FormBuilder, private router: Router, private employeeService: EmployeeService) {
   }
 
   add!: FormGroup;

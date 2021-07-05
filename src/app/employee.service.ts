@@ -3,6 +3,9 @@ import {HttpClient} from '@angular/common/http';
 import {Router} from '@angular/router';
 import {Employee} from './newemployee/employee-model';
 import {Observable, Subject} from 'rxjs';
+import {map} from 'rxjs/operators'
+
+
 
 @Injectable({
               providedIn: 'root'
@@ -17,8 +20,9 @@ export class EmployeeService {
   getAuthStatusListener(): Observable<boolean> {
     return this.copied.asObservable();
   }
-
+  //employeeModelObj : Employee = new Employee();
   constructor(private http: HttpClient, private router: Router) {
+
   }
 
   addEmployee(employee: Employee): Employee {
@@ -80,5 +84,33 @@ export class EmployeeService {
   fillForm(): Employee {
     return this.temp as Employee;
   }
-
+ postEmployee(employee: Employee){
+   return this.http.post<any>("http://localhost:3000/posts",employee)
+  .pipe(map((res:any)=>{
+    return res
+  }))
 }
+  
+   getEmployee(employee: Employee){
+    return this.http.get<any>("http://localhost:3000/posts")
+   .pipe(map((res:any)=>{
+     return res
+   }))
+  }
+  UpdateEmployee(employee: Employee,id:number){
+    return this.http.get<any>("http://localhost:3000/posts/"+employee)
+   .pipe(map((res:any)=>{
+     return res
+   }))
+  }
+  DeleteEmployee(id:number){
+    return this.http.get<any>("http://localhost:3000/posts/"+id)
+   .pipe(map((res:any)=>{
+     return res
+   }))
+  }
+   
+   
+
+ }
+

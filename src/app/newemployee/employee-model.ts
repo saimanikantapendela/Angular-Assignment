@@ -1,8 +1,8 @@
-export interface Employee {
-  fname: string;
-  lname: string;
-  num: string;
-  dob: string;
-  pan: string;
-  id: number;
+export class Employee {
+  fname: string | undefined;
+  lname: string | undefined;
+  num: string | undefined;
+  dob: string | undefined;
+  pan: string | undefined;
+  id: string | undefined;
 }
