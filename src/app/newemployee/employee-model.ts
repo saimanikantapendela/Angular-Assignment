@@ -4,5 +4,5 @@ export class Employee {
   num: string | undefined;
   dob: string | undefined;
   pan: string | undefined;
-  id: string | undefined;
+  id: number | undefined;
 }

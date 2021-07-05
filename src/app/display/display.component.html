@@ -20,7 +20,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let emp of employee" [id]="emp.id" (click)="selectRow(emp.id)" [ngClass]=
+    <tr (click)="selectRow(emp.id || -1)" *ngFor="let emp of employee | async" [id]="emp.id" [ngClass]=
       "emp.id === selectedRow?'bg-secondary':''">
       <td>{{emp.fname}} </td>
       <td>{{emp.lname}} </td>

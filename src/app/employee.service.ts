@@ -3,8 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {Router} from '@angular/router';
 import {Employee} from './newemployee/employee-model';
 import {Observable, Subject} from 'rxjs';
-import {map} from 'rxjs/operators'
-
+import {map} from 'rxjs/operators';
 
 
 @Injectable({
@@ -15,19 +14,15 @@ export class EmployeeService {
   selectedRow = -1;
   employees: Employee[] = [];
   temp: Employee | undefined;
+  updateFlow = false;
   copied = new Subject<boolean>();
 
-  getAuthStatusListener(): Observable<boolean> {
-    return this.copied.asObservable();
-  }
-  //employeeModelObj : Employee = new Employee();
   constructor(private http: HttpClient, private router: Router) {
 
   }
 
   addEmployee(employee: Employee): Employee {
-    this.employees.push(employee);
-    this.employees.forEach((e, i) => e.id = i);
+    this.postEmployee(employee);
     this.router.navigate(['/']).then();
     this.selectedRow = -1;
     return employee;
@@ -35,45 +30,49 @@ export class EmployeeService {
 
   selectRow(idx: number): number {
     this.selectedRow = idx;
+    this.http.get<Employee>('http://localhost:3000/employees/' + idx).subscribe((x) => {
+      this.temp = x;
+    });
     return this.selectedRow;
   }
 
-  getEmployees(): Employee[] {
-    console.log(this.employees);
-    return this.employees;
+  getEmployees(): Observable<Employee[]> {
+    return this.http.get<Employee[]>('http://localhost:3000/employees');
   }
 
-  deleteEmployee(): Employee[] {
-    if (this.selectedRow < 0 || this.selectedRow >= this.employees.length) {
+  deleteEmployee(): void {
+    if (this.selectedRow < 0) {
       alert('Select a row to delete');
-      return this.employees;
+      return;
     }
     const consent: boolean = confirm('Are you sure to delete the selected Employee?');
     if (!consent) {
-      return this.employees;
+      return;
     }
-    const employees: Employee[] = this.employees.filter((x, idx) => idx !== this.selectedRow);
-    employees.forEach((e, i) => e.id = i);
-    this.employees = employees;
-    this.selectedRow = -1;
-    return employees;
+    this.deleteEmployeeApi(this.selectedRow).subscribe(() => {
+      this.selectedRow = -1;
+    });
+    return;
   }
 
-  onupdate(emp: Employee): Employee[] {
-    emp.id = this.selectedRow;
-    this.employees[this.selectedRow] = emp;
-    this.selectedRow = -1;
-    this.temp = undefined;
-    this.router.navigate(['/']);
-    return this.employees;
+  onupdate(emp: Employee): Observable<Employee[]> {
+    this.updateEmployeeApi(emp, this.selectedRow).subscribe(
+      () => {
+        this.selectedRow = -1;
+        this.temp = undefined;
+        this.router.navigate(['/']);
+      }
+    );
+    this.updateFlow = false;
+    return this.getEmployees();
   }
 
   updateEmployee(): Promise<Employee[]> {
-    if (this.selectedRow < 0 || this.selectedRow >= this.employees.length) {
+    if (this.selectedRow < 0) {
       alert('Select a row to update');
       return Promise.resolve(this.employees);
     }
-    this.temp = this.employees[this.selectedRow];
+    this.updateFlow = true;
     return this.router.navigate(['/modify']).then(
       () => {
         return this.employees;
@@ -81,36 +80,27 @@ export class EmployeeService {
     );
   }
 
-  fillForm(): Employee {
-    return this.temp as Employee;
+  postEmployee(employee: Employee): Promise<Employee> {
+    return this.http.post<any>('http://localhost:3000/employees', employee)
+      .pipe(map((res: Employee) => {
+        return res;
+      })).toPromise();
   }
- postEmployee(employee: Employee){
-   return this.http.post<any>("http://localhost:3000/posts",employee)
-  .pipe(map((res:any)=>{
-    return res
-  }))
-}
-  
-   getEmployee(employee: Employee){
-    return this.http.get<any>("http://localhost:3000/posts")
-   .pipe(map((res:any)=>{
-     return res
-   }))
-  }
-  UpdateEmployee(employee: Employee,id:number){
-    return this.http.get<any>("http://localhost:3000/posts/"+employee)
-   .pipe(map((res:any)=>{
-     return res
-   }))
-  }
-  DeleteEmployee(id:number){
-    return this.http.get<any>("http://localhost:3000/posts/"+id)
-   .pipe(map((res:any)=>{
-     return res
-   }))
-  }
-   
-   
 
- }
+  updateEmployeeApi(employee: Employee, id: number): Observable<any> {
+    return this.http.put<any>('http://localhost:3000/employees/' + id, employee)
+      .pipe(map((res) => {
+        return res;
+      }));
+  }
+
+  deleteEmployeeApi(id: number): Observable<any> {
+    return this.http.delete('http://localhost:3000/employees/' + id)
+      .pipe(map((res: any) => {
+        return res;
+      }));
+  }
+
+
+}
 

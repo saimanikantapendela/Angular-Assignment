@@ -3,7 +3,7 @@ import {EmployeeService} from '../employee.service';
 import {Component, OnInit} from '@angular/core';
 import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
-import {HttpClient} from '@angular/common/http'
+import {HttpClient} from '@angular/common/http';
 
 
 @Component({
@@ -13,10 +13,11 @@ import {HttpClient} from '@angular/common/http'
            })
 export class NewEmployeeComponent implements OnInit {
   employees: any = [];
-  temp: any = [];
+  temp: Employee | undefined;
+  isUpdate = false;
   len: any;
 
-  constructor(private http: HttpClient , public fb: FormBuilder, private router: Router, private employeeService: EmployeeService) {
+  constructor(private http: HttpClient, public fb: FormBuilder, private router: Router, private employeeService: EmployeeService) {
   }
 
   add!: FormGroup;
@@ -43,8 +44,9 @@ export class NewEmployeeComponent implements OnInit {
           Validators.maxLength(9)
         ]),
       });
+    this.isUpdate = this.employeeService.updateFlow;
     this.temp = this.employeeService.temp;
-    this.len = Object.keys(this.temp).length;
+    this.len = Object.keys(this.temp || {}).length;
     console.log(this.len);
     console.log(this.temp);
     this.fillForm();
@@ -73,11 +75,11 @@ export class NewEmployeeComponent implements OnInit {
   fillForm(): void {
     this.add.patchValue(
       {
-        fname: this.temp.fname,
-        lname: this.temp.lname,
-        num: this.temp.num,
-        dob: this.temp.dob,
-        pan: this.temp.pan
+        fname: this.temp?.fname,
+        lname: this.temp?.lname,
+        num: this.temp?.num,
+        dob: this.temp?.dob,
+        pan: this.temp?.pan
       });
   }
 
@@ -88,18 +90,17 @@ export class NewEmployeeComponent implements OnInit {
 
   dataCapture(): void {
     this.employees = (this.add.value as Employee);
-    if (this.temp !== undefined) {
+    if (this.isUpdate) {
       this.employeeService.onupdate(this.employees);
     } else {
       this.employeeService.addEmployee(this.employees);
     }
-
   }
 
   moveToDisplay(): void {
     this.router.navigate(['']);
-    this.temp = null;
-    this.employeeService.temp = undefined;
+    // this.temp = undefined;
+    // this.employeeService.temp = undefined;
   }
 
   fillPatch(fill: any): void {

@@ -2,6 +2,7 @@ import {Employee} from '../newemployee/employee-model';
 import {Component, OnInit} from '@angular/core';
 import {EmployeeService} from '../employee.service';
 import {Router} from '@angular/router';
+import {Observable} from 'rxjs';
 
 @Component({
              selector: 'app-display',
@@ -13,7 +14,7 @@ export class DisplayComponent implements OnInit {
   constructor(private employeeService: EmployeeService, private router: Router) {
   }
 
-  employee: Employee[] = [];
+  employee: Observable<Employee[]> | undefined;
   selectedRow = -1;
 
   ngOnInit(): void {
@@ -25,15 +26,13 @@ export class DisplayComponent implements OnInit {
   }
 
   deleteEmployee(): void {
-    this.employee = this.employeeService.deleteEmployee();
+    // this.employee =
+    this.employeeService.deleteEmployee();
+    this.employee = this.employeeService.getEmployees();
   }
 
   updateEmployee(): void {
-    this.employeeService.updateEmployee().then(
-      emp => {
-        this.employee = emp;
-      }
-    );
+    this.employeeService.updateEmployee().then();
   }
 
 }
