@@ -1,6 +1,6 @@
 export interface Employee {
-  fName: string;
-  lName: string;
+  fname: string;
+  lname: string;
   num: string;
   dob: string;
   pan: string;

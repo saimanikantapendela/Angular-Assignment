@@ -1,6 +1,7 @@
-import {Employee} from './../newemployee/employee-model';
+import {Employee} from '../newemployee/employee-model';
 import {Component, OnInit} from '@angular/core';
 import {EmployeeService} from '../employee.service';
+import {Router} from '@angular/router';
 
 @Component({
              selector: 'app-display',
@@ -9,7 +10,7 @@ import {EmployeeService} from '../employee.service';
            })
 export class DisplayComponent implements OnInit {
 
-  constructor(private employeeService: EmployeeService) {
+  constructor(private employeeService: EmployeeService, private router: Router) {
   }
 
   employee: Employee[] = [];
@@ -25,6 +26,14 @@ export class DisplayComponent implements OnInit {
 
   deleteEmployee(): void {
     this.employee = this.employeeService.deleteEmployee();
+  }
+
+  updateEmployee(): void {
+    this.employeeService.updateEmployee().then(
+      emp => {
+        this.employee = emp;
+      }
+    );
   }
 
 }

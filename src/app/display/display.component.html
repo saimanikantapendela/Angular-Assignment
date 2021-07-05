@@ -4,13 +4,14 @@
   </nav>
 </div>
 <div class="container">
-  <span routerLink="/modify"><i class="fas fa-plus fa"></i></span>&nbsp;&nbsp;&nbsp;&nbsp;
-  <span (click)="deleteEmployee()"><i class="fas fa-trash"></i></span>&nbsp;&nbsp;&nbsp;&nbsp;
-  <span><i class="fas fa-edit"></i></span>
+  <div class="ml-auto w-100 fa">
+    <span routerLink="/modify"><i class="fas fa-plus"></i></span>
+    <span (click)="deleteEmployee()"><i class="ml-4 fas fa-trash"></i></span>
+    <span (click)="updateEmployee()"><i class="ml-4 fas fa-edit"></i></span>
+  </div>
   <table class="table table-striped">
     <thead>
     <tr>
-      <th scope="col">Code</th>
       <th scope="col">First Name</th>
       <th scope="col">Last Name</th>
       <th scope="col">Mobile</th>
@@ -21,9 +22,8 @@
     <tbody>
     <tr *ngFor="let emp of employee" [id]="emp.id" (click)="selectRow(emp.id)" [ngClass]=
       "emp.id === selectedRow?'bg-secondary':''">
-      <th scope="row"></th>
-      <td>{{emp.fName}} </td>
-      <td>{{emp.lName}} </td>
+      <td>{{emp.fname}} </td>
+      <td>{{emp.lname}} </td>
       <td>{{emp.num}}</td>
       <td>{{emp.dob}}</td>
       <td>{{emp.pan}}</td>

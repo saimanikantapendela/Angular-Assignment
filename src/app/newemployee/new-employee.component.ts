@@ -6,13 +6,15 @@ import {Router} from '@angular/router';
 
 @Component({
              selector: 'app-newemployee',
-             templateUrl: './newemployee.component.html',
-             styleUrls: ['./newemployee.component.css']
+             templateUrl: './new-employee.component.html',
+             styleUrls: ['./new-employee.component.css']
            })
-export class NewemployeeComponent implements OnInit {
+export class NewEmployeeComponent implements OnInit {
   employees: any = [];
+  temp: any = [];
+  len: any;
 
-  constructor(public fb: FormBuilder, private router: Router, private _employeeService: EmployeeService) {
+  constructor(public fb: FormBuilder, private router: Router, private employeeService: EmployeeService) {
   }
 
   add!: FormGroup;
@@ -26,7 +28,6 @@ export class NewemployeeComponent implements OnInit {
         lname: new FormControl('', [
           Validators.required,
         ]),
-
         num: new FormControl('', [
           Validators.required,
           Validators.minLength(10),
@@ -40,7 +41,11 @@ export class NewemployeeComponent implements OnInit {
           Validators.maxLength(9)
         ]),
       });
-
+    this.temp = this.employeeService.temp;
+    this.len = Object.keys(this.temp).length;
+    console.log(this.len);
+    console.log(this.temp);
+    this.fillForm();
   }
 
   get fname(): AbstractControl {
@@ -63,15 +68,40 @@ export class NewemployeeComponent implements OnInit {
     return this.add.controls.pan;
   }
 
+  fillForm(): void {
+    this.add.patchValue(
+      {
+        fname: this.temp.fname,
+        lname: this.temp.lname,
+        num: this.temp.num,
+        dob: this.temp.dob,
+        pan: this.temp.pan
+      });
+  }
+
+  // updateEmployee(emp: Employee): void {
+  //   // this.employeeService.selectRow(this.temp.id);
+  //   this.employeeService.onupdate(emp);
+  // }
 
   dataCapture(): void {
     this.employees = (this.add.value as Employee);
-    this._employeeService.addEmployee(this.employees);
-    // this._employeeService.getEmployees();
+    if (this.temp !== undefined) {
+      this.employeeService.onupdate(this.employees);
+    } else {
+      this.employeeService.addEmployee(this.employees);
+    }
+
   }
 
   moveToDisplay(): void {
     this.router.navigate(['']);
+    this.temp = null;
+    this.employeeService.temp = undefined;
+  }
+
+  fillPatch(fill: any): void {
+    console.log(fill);
   }
 
 
